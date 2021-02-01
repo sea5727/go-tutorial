@@ -4,17 +4,11 @@ import (
 	"fmt"
 	"log"
 	"net"
-	"sync"
-
-	"golang.org/x/sys/unix"
 	// "golang.org/x/sys/unix"
 )
 
-type epoll struct {
-	fd          int
-	connections map[int]net.Conn
-	lock        *sync.RWMutex
-}
+
+var epoller *epoll
 
 func main() {
 	fmt.Println("Hello World")
@@ -25,7 +19,7 @@ func main() {
 		panic(err)
 	}
 
-	_, err = MkEpoll()
+	epoller, err = MkEpoll()
 	if err != nil {
 		panic(err)
 	}
@@ -43,21 +37,9 @@ func main() {
 			log.Printf("accept err: %v", e)
 		}
 
+		epoller.
+
 	}
-}
-
-func MkEpoll() (*epoll, error) {
-	fd, err := unix.EpollCreate1(0)
-	if err != nil {
-		return nil, err
-	}
-
-	return &epoll{
-		fd:          fd,
-		lock:        &sync.RWMutex{},
-		connections: make(map[int]net.Conn),
-	}, nil
-
 }
 
 func start() {
